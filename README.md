@@ -1,1 +1,1 @@
-This repo is originally forked from: https://github.com/justmeandopensource/kubernetes/
+Moved to: https://github.com/k4mrul/DevOps/tree/master/Tools/Kubernetes
