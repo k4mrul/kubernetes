@@ -38,7 +38,7 @@ $ lxc list
 
 ```
 
-#### Run the following commands one by one (orders matters!)
+#### Run the following commands one by one (orders matter!)
 ```
 $ cat bootstrap-kube.sh | lxc exec kmaster bash
 $ cat bootstrap-kube.sh | lxc exec kworker1 bash
