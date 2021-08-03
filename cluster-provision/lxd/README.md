@@ -6,7 +6,7 @@ Originally forked from https://github.com/justmeandopensource/kubernetes/ and tw
 - fixed /dev/kmsg issue in lxc container
 
 # Prerequisite
-Make sure you can launch a container without an error
+Tested in Manjaro Linux. Make sure you can launch a container without an error
 
 `lxc launch ubuntu:20.04 test`
 
