@@ -1,0 +1,100 @@
+#!/bin/bash
+
+usage()
+{
+  echo "Usage: kubelx [provision|destroy|start|stop]"
+  exit 1
+}
+
+NODES="kmaster kworker1 kworker2"
+
+kubeprovision()
+{
+
+  FILENAME="bootstrap-kube-ubuntu.sh"
+  
+  if [ ! -f "$FILENAME" ]
+  then
+    echo "bootstrap-kube-ubuntu.sh file does not exist in current directory"
+    exit 1
+  fi 
+
+
+  # check if we have k8s profile or create one
+  lxc profile list | grep -qo k8s || (lxc profile create k8s && cat k8s-profile-config | lxc profile edit k8s)
+  echo
+  for node in $NODES
+  do
+    echo "==> Bringing up $node"
+    lxc launch ubuntu:20.04 $node --profile k8s
+    sleep 15
+    echo "==> /dev/kmsg fix"
+    lxc exec $node -- sh -c "sudo echo 'L /dev/kmsg - - - - /dev/null' > /etc/tmpfiles.d/kmsg.conf"
+    lxc restart $node --force
+    sleep 15
+    echo "==> Running provisioner script"
+    cat bootstrap-kube-ubuntu.sh | lxc exec $node bash
+  done
+  echo "==> Wait 4/5 minutes for fully up the cluster (weave network interface should up)"
+  echo "==> Do: scp root@kmaster-ip-here:/etc/kubernetes/admin.conf ~/.kube/config"
+}
+
+kubedestroy()
+{
+  for node in $NODES
+  do
+    echo "==> Destroying $node..."
+    lxc delete --force $node
+  done
+}
+
+kubestart()
+{
+  for node in $NODES
+  do
+    lxc start $node
+  done
+  echo "==> Wait 4/5 minutes for fully up and running the cluster (weave network interface should up)"
+}
+
+kubestop()
+{
+  for node in $NODES
+  do
+    lxc stop $node --force
+  done
+}
+
+
+kubedestroy()
+{
+  for node in $NODES
+  do
+    echo "==> Destroying $node..."
+    lxc delete --force $node
+  done
+}
+
+
+
+case "$1" in
+  provision)
+    echo -e "\nProvisioning Kubernetes Cluster...\n"
+    kubeprovision
+    ;;
+  destroy)
+    echo -e "\nDestroying Kubernetes Cluster...\n"
+    kubedestroy
+    ;;
+  start)
+    echo -e "\nStarting Kubernetes Cluster...\n"
+    kubestart
+    ;;
+  stop)
+    echo -e "\nStopping Kubernetes Cluster...\n"
+    kubestop
+    ;;
+  *)
+    usage
+    ;;
+esac
