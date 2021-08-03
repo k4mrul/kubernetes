@@ -2,11 +2,10 @@
 Originally forked from https://github.com/justmeandopensource/kubernetes/ and tweaked/fixed below changes
 
 - weave network plugin instead of flannel for network policy intensive workloads
-- used [nerdctl](https://github.com/containerd/nerdctl) Docker-compatible CLI for managing containerd
-- fixed /dev/kmsg issue in lxc container
+- fixed /dev/kmsg related issue so that cluster can be stopped and started anytime.
 
-# Prerequisite
-Tested in Manjaro Linux. Make sure you can launch a container without an error
+# Provisioning Cluster
+Make sure you can launch a container without an issue
 
 `lxc launch ubuntu:20.04 test`
 
@@ -17,12 +16,10 @@ Tested in Manjaro Linux. Make sure you can launch a container without an error
 |test|RUNNING|10.179.77.94 (eth0)||CONTAINER|0|
 
 
-If lxc container state is running and IPV4 address assigned, you are good to go.
+If lxc container state is running and IPV4 address assigned you are good to go.
 
 
-
-# Provisioning Cluster
-Clone this repo and run provision script
+Now clone this repo and run provision script
 ```
 chmod +x kubelex
 ```
