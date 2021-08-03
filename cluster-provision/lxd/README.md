@@ -2,8 +2,8 @@
 Originally forked from https://github.com/justmeandopensource/kubernetes/ and tweaked/fixed below changes
 
 - weave network plugin instead of flannel for network policy intensive workloads
-- used [nerdctl](https://github.com/containerd/nerdctl) Docker-compatible CLI for containerd runtime
-- fixed /dev/kmsg related issue
+- used [nerdctl](https://github.com/containerd/nerdctl) Docker-compatible CLI for managing containerd
+- fixed /dev/kmsg issue in lxc container
 
 # Prerequisite
 Make sure you can launch a container without an error
