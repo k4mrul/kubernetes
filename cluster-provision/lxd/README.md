@@ -1,8 +1,9 @@
-# Kubernetes cluster provision in LXC
+# Kubernetes cluster provision in LXC (Linux only)
 Originally forked from https://github.com/justmeandopensource/kubernetes/ and tweaked/fixed below changes
 
 - weave network plugin instead of flannel for network policy intensive workloads
-- fixed /dev/kmsg related issue so that cluster can be stopped and started anytime.
+- fixed /dev/kmsg issue in lxc container
+
 
 # Provisioning Cluster
 Make sure you can launch a container without an issue
