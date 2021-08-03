@@ -36,6 +36,7 @@ kubeprovision()
     cat bootstrap-kube-ubuntu.sh | lxc exec $node bash
   done
   echo "==> Wait 4/5 minutes for fully up the cluster (weave network interface should up)"
+  echo "==> master node pass: kubeadmin"
   echo "==> Do: scp root@kmaster-ip-here:/etc/kubernetes/admin.conf ~/.kube/config"
 }
 
