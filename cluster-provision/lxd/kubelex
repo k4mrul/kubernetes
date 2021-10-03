@@ -6,7 +6,7 @@ usage()
   exit 1
 }
 
-NODES="kmaster kworker1 kworker2"
+NODES="kmaster kworker1"
 
 kubeprovision()
 {
@@ -55,7 +55,10 @@ kubestart()
   do
     lxc start $node
   done
-  echo "==> Wait 4/5 minutes for fully up and running the cluster (weave network interface should up)"
+  echo "==> Please wait"
+  sleep 240
+  lxc exec kmaster -- sh -c "kubectl -n kube-system rollout restart deployment coredns"
+  echo "All up!"
 }
 
 kubestop()
