@@ -7,7 +7,7 @@ echo "[TASK 1] Install docker runtime"
 apt update -qq >/dev/null 2>&1
 apt install -qq -y ca-certificates apt-transport-https lsb-release gnupg >/dev/null 2>&1
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg  >/dev/null 2>&1
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null 2>&1
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null 2>&1
 apt update -qq >/dev/null 2>&1
 apt install -qq -y docker-ce docker-ce-cli containerd.io >/dev/null 2>&1
 systemctl enable docker >/dev/null 2>&1
