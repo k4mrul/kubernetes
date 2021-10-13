@@ -66,7 +66,7 @@ then
   cp /etc/kubernetes/admin.conf /root/.kube/config  
 
   echo "[TASK 11] Deploy Weave network"
-  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" > /dev/null 2>&1
+  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&env.IPALLOC_RANGE=10.33.0.0/16" > /dev/null 2>&1
   
   echo "[TASK 12] Generate and save cluster join command to /joincluster.sh"
   joinCommand=$(kubeadm token create --print-join-command 2>/dev/null) 
