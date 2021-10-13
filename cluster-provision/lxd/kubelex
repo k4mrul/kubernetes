@@ -56,7 +56,7 @@ kubestart()
     lxc start $node
   done
   echo "==> Please wait"
-  sleep 240
+  sleep 160
   lxc exec kmaster -- sh -c "kubectl -n kube-system rollout restart deployment coredns"
   echo "All up!"
 }
