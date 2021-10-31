@@ -58,7 +58,7 @@ kubedestroy()
     CNT=$((CNT + HOSTCOUNT))
     echo "==> Destroying $node..."
     lxc delete --force $node
-    lxc profile delete ipvlan_192.168.1.20${CNT})
+    lxc profile delete ipvlan_192.168.1.20${CNT}
     rm -f ipvlan-192.168.1.20${CNT}
   done
 }
