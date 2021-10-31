@@ -68,9 +68,10 @@ then
   echo "[TASK 11] Deploy Weave network"
   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&env.IPALLOC_RANGE=10.33.0.0/16" > /dev/null 2>&1
   
-  echo "[TASK 12] Generate and save cluster join command to /joincluster.sh"
+  echo "[TASK 12] Run this join command in worker node"
   joinCommand=$(kubeadm token create --print-join-command 2>/dev/null) 
-  echo "$joinCommand --ignore-preflight-errors=all" > /joincluster.sh
+  # echo "$joinCommand --ignore-preflight-errors=all" > /joincluster.sh
+  echo "$joinCommand --ignore-preflight-errors=all"
 
 fi
 
@@ -78,10 +79,10 @@ fi
 # To be executed only on worker nodes #
 #######################################
 
-if [[ $(hostname) =~ .*worker.* ]]
-then
-  echo "[TASK 7] Join node to Kubernetes Cluster"
-  apt install -qq -y sshpass >/dev/null 2>&1
-  sshpass -p "kubeadmin" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no kmaster.lxd:/joincluster.sh /joincluster.sh 2>/tmp/joincluster.log
-  bash /joincluster.sh >> /tmp/joincluster.log 2>&1
-fi
+# if [[ $(hostname) =~ .*worker.* ]]
+# then
+#   echo "[TASK 7] Join node to Kubernetes Cluster"
+#   apt install -qq -y sshpass >/dev/null 2>&1
+#   sshpass -p "kubeadmin" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no kmaster.lxd:/joincluster.sh /joincluster.sh 2>/tmp/joincluster.log
+#   bash /joincluster.sh >> /tmp/joincluster.log 2>&1
+# fi
