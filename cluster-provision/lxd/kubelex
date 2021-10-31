@@ -7,6 +7,8 @@ usage()
 }
 
 NODES="kmaster kworker1"
+CNT=0
+
 
 kubeprovision()
 {
@@ -23,10 +25,18 @@ kubeprovision()
   # check if we have k8s profile or create one
   lxc profile list | grep -qo k8s || (lxc profile create k8s && cat k8s-profile-config | lxc profile edit k8s)
   echo
-  for node in $NODES
+  for node in ${NODES[@]};
   do
+    HOSTCOUNT=`echo $node |wc -l`
+    CNT=$((CNT + HOSTCOUNT))
+
+    sh ./generate-ipvlan-profile.sh "$CNT"
+
+    # create profile
+    lxc profile create ipvlan_192.168.1.20${CNT} && cat ipvlan-192.168.1.20${CNT} | lxc profile edit ipvlan_192.168.1.20${CNT})
+    
     echo "==> Bringing up $node"
-    lxc launch ubuntu:20.04 $node --profile k8s
+    lxc launch ubuntu:20.04 $node --profile k8s --profile ipvlan_192.168.1.20${CNT}
     sleep 15
     echo "==> /dev/kmsg fix"
     lxc exec $node -- sh -c "sudo echo 'L /dev/kmsg - - - - /dev/null' > /etc/tmpfiles.d/kmsg.conf"
@@ -42,16 +52,20 @@ kubeprovision()
 
 kubedestroy()
 {
-  for node in $NODES
+  for node in ${NODES[@]};
   do
+    HOSTCOUNT=`echo $node |wc -l`
+    CNT=$((CNT + HOSTCOUNT))
     echo "==> Destroying $node..."
     lxc delete --force $node
+    lxc profile delete ipvlan_192.168.1.20${CNT})
+    rm -f ipvlan-192.168.1.20${CNT}
   done
 }
 
 kubestart()
 {
-  for node in $NODES
+  for node in ${NODES[@]};
   do
     lxc start $node
   done
@@ -63,22 +77,11 @@ kubestart()
 
 kubestop()
 {
-  for node in $NODES
+  for node in ${NODES[@]};
   do
     lxc stop $node --force
   done
 }
-
-
-kubedestroy()
-{
-  for node in $NODES
-  do
-    echo "==> Destroying $node..."
-    lxc delete --force $node
-  done
-}
-
 
 
 case "$1" in
@@ -102,3 +105,17 @@ case "$1" in
     usage
     ;;
 esac
+
+#############Dump#################
+# NODES="host1.com host2.com host3.com host4.com"
+# #maximus=(host11.com host12.com host13.com)
+# #firefly(host5.com)
+# COUNT=0
+
+# for i in ${NODES[@]};
+# do
+#     HOSTCOUNT=`echo $i |wc -l`
+#     COUNT=$((COUNT + HOSTCOUNT))
+#     echo "$COUNT"
+#     echo "$i"
+# done

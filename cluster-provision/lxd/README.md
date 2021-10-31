@@ -4,6 +4,14 @@ Originally forked from https://github.com/justmeandopensource/kubernetes/ and tw
 - weave network plugin instead of flannel for network policy intensive workloads
 - fixed /dev/kmsg issue in lxc container
 
+# Network: ipvlan
+
+This setup will create ipvlan, you can ping your lxc containers from LAN. IP block will start from
+192.168.1.201
+
+Note. You can't ping the lxc container from your host machine. However, you can ping it within the network
+
+Source: https://blog.simos.info/how-to-get-lxd-containers-obtain-ip-from-the-lan-with-ipvlan-networking/
 
 # Provisioning Cluster
 Make sure you can launch a container without an issue

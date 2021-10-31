@@ -1,3 +1,4 @@
+
 config:
   limits.cpu: "2"
   limits.memory: 4GB
@@ -11,8 +12,7 @@ description: LXD profile for Kubernetes
 devices:
   eth0:
     name: eth0
-    nictype: bridged
-    parent: lxdbr0
+    network: lxdbr0
     type: nic
   root:
     path: /
