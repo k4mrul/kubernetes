@@ -33,10 +33,10 @@ kubeprovision()
     sh ./generate-ipvlan-profile.sh "$CNT"
 
     # create profile
-    lxc profile create ipvlan_192.168.1.20${CNT} && cat ipvlan-192.168.1.20${CNT} | lxc profile edit ipvlan_192.168.1.20${CNT})
+    lxc profile create ipvlan_192.168.1.20"$CNT" && cat ipvlan-192.168.1.20"$CNT" | lxc profile edit ipvlan_192.168.1.20"$CNT")
     
     echo "==> Bringing up $node"
-    lxc launch ubuntu:20.04 $node --profile k8s --profile ipvlan_192.168.1.20${CNT}
+    lxc launch ubuntu:20.04 $node --profile k8s --profile ipvlan_192.168.1.20"$CNT"
     sleep 15
     echo "==> /dev/kmsg fix"
     lxc exec $node -- sh -c "sudo echo 'L /dev/kmsg - - - - /dev/null' > /etc/tmpfiles.d/kmsg.conf"
@@ -58,8 +58,8 @@ kubedestroy()
     CNT=$((CNT + HOSTCOUNT))
     echo "==> Destroying $node..."
     lxc delete --force $node
-    lxc profile delete ipvlan_192.168.1.20${CNT})
-    rm -f ipvlan-192.168.1.20${CNT}
+    lxc profile delete ipvlan_192.168.1.20"$CNT")
+    rm -f ipvlan-192.168.1.20"$CNT"
   done
 }
 
