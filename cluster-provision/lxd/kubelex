@@ -30,7 +30,7 @@ kubeprovision()
     HOSTCOUNT=`echo $node |wc -l`
     CNT=$((CNT + HOSTCOUNT))
 
-    sh ./generate-ipvlan-profile.sh "$CNT"
+    ./generate-ipvlan-profile.sh "$CNT"
 
     # create profile
     lxc profile create ipvlan_192.168.1.20${CNT} && cat ipvlan-192.168.1.20${CNT} | lxc profile edit ipvlan_192.168.1.20${CNT}

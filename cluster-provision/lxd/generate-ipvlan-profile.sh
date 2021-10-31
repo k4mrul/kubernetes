@@ -1,9 +1,9 @@
 #!/bin/sh
 
 
-if [[ $# -eq 0 ]] ; then
-    echo "Need to provide argument"
-fi
+# if [[ $# -eq 0 ]] ; then
+#     echo "Need to provide argument"
+# fi
 
 
 DEFAULT_INTERFACE=$(ip r | grep default | awk '/default/ {print $5}')
