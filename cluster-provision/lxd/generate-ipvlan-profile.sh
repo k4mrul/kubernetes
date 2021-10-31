@@ -29,7 +29,7 @@ description: "ipvlan LXD profile"
 devices:
   eth0:
     ipv4.address: 192.168.1.20${CNT}
-    nictype: ipvlan_192.168.1.20${CNT}
+    nictype: ipvlan
     parent: ${DEFAULT_INTERFACE}
     type: nic
 name: ipvlan
